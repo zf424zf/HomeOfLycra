@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -31,7 +32,7 @@ class ProductController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -46,7 +47,7 @@ class ProductController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -82,7 +83,7 @@ class ProductController extends Controller
         $grid = new Grid(new Product);
         $grid->id('Id');
         $grid->name('名称');
-        $grid->icon('图标')->display(function($icon){
+        $grid->icon('图标')->display(function ($icon) {
             $url = env('app.APP_URL') . '/uploads/' . $icon;
             return "<img src='$url' width='30px' height='30px' />";
         });
@@ -90,21 +91,30 @@ class ProductController extends Controller
         $grid->price('费用');
         $grid->desc('介绍');
         $grid->apply_num('申请人数');
-        $grid->url('网址');
+//        $grid->url('网址');
         $grid->limit_date('借款期限');
         $grid->limit_age('年龄限制');
         $grid->apply_time('办理时间');
         $grid->check_type('审核方式');
         $grid->order('排序');
+        $colors = ['danger', 'success', 'primary', 'info', 'warning'];
+        $grid->keywords('标签')->display(function ($keywords) use ($colors) {
+//            $keywordArr = explode(',', $keywords);
+            $dom = '';
+            foreach ($keywords as $key => $value) {
+                $dom .= '<span style="margin:0 1px" class="label label-' . $colors[$key % count($colors)] . '">'.$value.'</span>';
+            }
+            return $dom;
+        });
         $states = [
-            'on'  => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            'on' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
             'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
         ];
         $grid->status('上下架')->switch($states);
 //        $grid->created_at('创建时间');
 //        $grid->updated_at('编辑时间');
 
-        $grid->filter(function($filter){
+        $grid->filter(function ($filter) {
             // 在这里添加字段过滤器
             $filter->like('name', 'name');
         });
@@ -114,7 +124,7 @@ class ProductController extends Controller
     /**
      * Make a show builder.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @return Show
      */
     protected function detail($id)
@@ -135,6 +145,7 @@ class ProductController extends Controller
         $show->order('排序');
         $show->created_at('创建时间');
         $show->updated_at('编辑时间');
+        $show->keywords('标签');
         return $show;
     }
 
@@ -158,11 +169,13 @@ class ProductController extends Controller
         $form->text('apply_time', '办理时间');
         $form->text('check_type', '审核方式');
         $form->number('order', '排序')->min(0);
+        $tags = Tag::all()->pluck('name')->toArray();
+        $form->tags('keywords', '标签')->options($tags);
         $states = [
-            'on'  => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            'on' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
             'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
         ];
-        $form->switch('status','是否上架')->options($states);
+        $form->switch('status', '是否上架')->options($states);
         return $form;
     }
 }

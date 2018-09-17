@@ -20,4 +20,7 @@ Route::namespace('api')->group(function(){
     Route::get('product','ProductionController@index');
     Route::get('product/{product}','ProductionController@show');
     Route::get('banner','BannerController@index');
+    Route::get('test',function (){
+//        return $tags = \App\Models\Tag::all()->pluck('name')->toArray();
+    });
 });

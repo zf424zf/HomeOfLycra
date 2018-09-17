@@ -11,5 +11,12 @@ namespace App\Models;
 
 class Product extends BaseModel
 {
-
+    public function getKeywordsAttribute()
+    {
+        $this->attributes['keywords'] = explode(',', $this->attributes['keywords']);
+        if (empty(array_filter($this->attributes['keywords']))){
+            return [];
+        }
+        return $this->attributes['keywords'];
+    }
 }

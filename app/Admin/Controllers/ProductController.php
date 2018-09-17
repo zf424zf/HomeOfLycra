@@ -96,8 +96,13 @@ class ProductController extends Controller
         $grid->apply_time('办理时间');
         $grid->check_type('审核方式');
         $grid->order('排序');
-        $grid->created_at('创建时间');
-        $grid->updated_at('编辑时间');
+        $states = [
+            'on'  => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
+        ];
+        $grid->status('上下架')->switch($states);
+//        $grid->created_at('创建时间');
+//        $grid->updated_at('编辑时间');
 
         $grid->filter(function($filter){
             // 在这里添加字段过滤器
@@ -153,6 +158,11 @@ class ProductController extends Controller
         $form->text('apply_time', '办理时间');
         $form->text('check_type', '审核方式');
         $form->number('order', '排序')->min(0);
+        $states = [
+            'on'  => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
+        ];
+        $form->switch('status','是否上架')->options($states);
         return $form;
     }
 }

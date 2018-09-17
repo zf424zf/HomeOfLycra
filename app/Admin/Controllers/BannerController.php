@@ -31,7 +31,7 @@ class BannerController extends Controller
     /**
      * Show interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -46,7 +46,7 @@ class BannerController extends Controller
     /**
      * Edit interface.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @param Content $content
      * @return Content
      */
@@ -82,17 +82,22 @@ class BannerController extends Controller
         $grid = new Grid(new Banner);
 
         $grid->id('Id');
-        $grid->url('图片')->display(function ($image){
+        $grid->url('图片')->display(function ($image) {
             $url = env('app.APP_URL') . '/uploads/' . $image;
             return "<img width='30px' height='30px' src='$url'/>";
         });
         $grid->desc('备注');
-        $grid->status('是否显示')->display(function ($status){
-            if($status == 1){
-                return "显示";
-            }
-            return "不显示";
-        });
+        $states = [
+            'on' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
+        ];
+        $grid->status('上下架')->switch($states);
+//        $grid->status('是否显示')->display(function ($status){
+//            if($status == 1){
+//                return "显示";
+//            }
+//            return "不显示";
+//        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -102,7 +107,7 @@ class BannerController extends Controller
     /**
      * Make a show builder.
      *
-     * @param mixed   $id
+     * @param mixed $id
      * @return Show
      */
     protected function detail($id)
@@ -129,8 +134,12 @@ class BannerController extends Controller
         $form = new Form(new Banner);
         $form->image('url', '图片')->move('images/banner')->uniqueName();
         $form->text('desc', '备注');
-        $form->number('status', '是否显示(1为显示)')->max(1)->min(0);
-
+//        $form->number('status', '是否显示(1为显示)')->max(1)->min(0);
+        $states = [
+            '上架' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
+            '下架' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
+        ];
+        $form->switch('status', '上下架')->options($states);
         return $form;
     }
 }

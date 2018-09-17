@@ -18,4 +18,6 @@ use Illuminate\Http\Request;
 //});
 Route::namespace('api')->group(function(){
     Route::get('product','ProductionController@index');
+    Route::get('product/{product}','ProductionController@show');
+    Route::get('banner','BannerController@index');
 });

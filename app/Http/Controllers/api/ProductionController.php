@@ -20,7 +20,7 @@ class ProductionController extends Controller
         $pagesize = empty($request->pagesize) ? 10 : $request->pagesize;
         $type = $request->has('type') ? $request->type : 0;
         $product = $product->where('status', 1);
-        switch ($type){
+        switch ($type) {
             case 0:
                 $product = $product->orderBy('id', 'desc');
                 break;
@@ -31,10 +31,19 @@ class ProductionController extends Controller
                 $product = $product->orderBy('order', 'asc')->orderBy('id', 'desc');
                 break;
         }
-        if($request->has('s')){
+        if ($request->has('s')) {
             $search = $request->get('s');
             $product = $product->where('name', 'like', "%$search%");
         }
         return $product->paginate($pagesize);
+    }
+
+    public function show($id)
+    {
+        $product = Product::find($id);
+        if (!isset($product)) {
+            return ['status' => 404, 'data' => null];
+        }
+        return ['status' => 200, 'data' => $product];
     }
 }

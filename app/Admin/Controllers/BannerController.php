@@ -38,8 +38,8 @@ class BannerController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
-            ->description('description')
+            ->header('详情')
+            ->description('轮播图详情')
             ->body($this->detail($id));
     }
 
@@ -53,8 +53,8 @@ class BannerController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('Edit')
-            ->description('description')
+            ->header('编辑')
+            ->description('轮播图编辑')
             ->body($this->form()->edit($id));
     }
 
@@ -67,8 +67,8 @@ class BannerController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('Create')
-            ->description('description')
+            ->header('创建')
+            ->description('创建轮播图')
             ->body($this->form());
     }
 
@@ -87,6 +87,7 @@ class BannerController extends Controller
             return "<img width='30px' height='30px' src='$url'/>";
         });
         $grid->desc('备注');
+        $grid->path('跳转链接');
         $states = [
             'on' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
             'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
@@ -116,8 +117,9 @@ class BannerController extends Controller
 
         $show->id('Id');
         $show->url()->image();
-        $show->desc('Desc');
-        $show->status('Status');
+        $show->desc('描述');
+        $show->status('是否上架');
+        $show->path('跳转链接');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -134,6 +136,7 @@ class BannerController extends Controller
         $form = new Form(new Banner);
         $form->image('url', '图片')->move('images/banner')->uniqueName();
         $form->text('desc', '备注');
+        $form->text('path','跳转链接');
 //        $form->number('status', '是否显示(1为显示)')->max(1)->min(0);
         $states = [
             '上架' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],

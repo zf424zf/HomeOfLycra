@@ -99,9 +99,9 @@ class ProductController extends Controller
         $grid->order('排序');
         $colors = ['danger', 'success', 'primary', 'info', 'warning'];
         $grid->keywords('标签')->display(function ($keywords) use ($colors) {
-//            $keywordArr = explode(',', $keywords);
+            $keywordArr = explode(',', $keywords);
             $dom = '';
-            foreach ($keywords as $key => $value) {
+            foreach ($keywordArr as $key => $value) {
                 $dom .= '<span style="margin:0 1px" class="label label-' . $colors[$key % count($colors)] . '">'.$value.'</span>';
             }
             return $dom;
@@ -110,9 +110,15 @@ class ProductController extends Controller
             'on' => ['value' => 1, 'text' => '上架', 'color' => 'primary'],
             'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
         ];
+
         $grid->status('上下架')->switch($states);
 //        $grid->created_at('创建时间');
 //        $grid->updated_at('编辑时间');
+        $recStates = [
+            'on' => ['value' => 1, 'text' => '推荐', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '正常', 'color' => 'default'],
+        ];
+        $grid->is_recommend('是否推荐')->switch($recStates);
 
         $grid->filter(function ($filter) {
             // 在这里添加字段过滤器
@@ -176,6 +182,11 @@ class ProductController extends Controller
             'off' => ['value' => 0, 'text' => '下架', 'color' => 'default'],
         ];
         $form->switch('status', '是否上架')->options($states);
+        $recStates = [
+            'on' => ['value' => 1, 'text' => '推荐', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '正常', 'color' => 'default'],
+        ];
+        $form->switch('is_recommend', '是否推荐')->options($recStates);
         return $form;
     }
 }

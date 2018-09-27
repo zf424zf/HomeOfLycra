@@ -41,6 +41,7 @@ class ProductionController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
+        $product->keywords = array_filter(explode(',',$product->keywords));
         if (!isset($product)) {
             return ['status' => 404, 'data' => null];
         }

@@ -25,10 +25,10 @@ class ProductionController extends Controller
                 $product = $product->orderBy('id', 'desc');
                 break;
             case 1:
-                $product = $product->orderBy('apply_num', 'asc');
+                $product = $product->orderBy('apply_num', 'desc');
                 break;
             case 2:
-                $product = $product->orderBy('order', 'desc')->orderBy('id', 'desc');
+                $product = $product->orderBy('order', 'asc')->orderBy('id', 'desc');
                 break;
         }
         if ($request->has('s')) {

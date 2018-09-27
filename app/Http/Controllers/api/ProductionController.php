@@ -19,7 +19,7 @@ class ProductionController extends Controller
     {
         $pagesize = empty($request->pagesize) ? 10 : $request->pagesize;
         $type = $request->has('type') ? $request->type : 0;
-        $product = $product->where('status', 1);
+        $product = $product->where('status', 1)->orderBy('is_recommend','desc');
         switch ($type) {
             case 0:
                 $product = $product->orderBy('id', 'desc');
@@ -28,7 +28,7 @@ class ProductionController extends Controller
                 $product = $product->orderBy('apply_num', 'asc');
                 break;
             case 2:
-                $product = $product->orderBy('order', 'asc')->orderBy('id', 'desc');
+                $product = $product->orderBy('order', 'desc')->orderBy('id', 'desc');
                 break;
         }
         if ($request->has('s')) {

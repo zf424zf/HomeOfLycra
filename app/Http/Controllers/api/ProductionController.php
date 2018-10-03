@@ -45,6 +45,7 @@ class ProductionController extends Controller
         if (!isset($product)) {
             return ['status' => 404, 'data' => null];
         }
+        $product->increment('apply_num');
         return ['status' => 200, 'data' => $product];
     }
 }

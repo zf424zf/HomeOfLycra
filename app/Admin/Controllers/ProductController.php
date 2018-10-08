@@ -89,7 +89,7 @@ class ProductController extends Controller
         });
         $grid->limit('额度');
         $grid->price('费用');
-        $grid->desc('介绍');
+        $grid->slogan('简介');
         $grid->apply_num('申请人数');
 //        $grid->url('网址');
         $grid->limit_date('借款期限');
@@ -141,7 +141,8 @@ class ProductController extends Controller
         $show->icon('图标')->image();
         $show->limit('额度');
         $show->price('费用');
-        $show->desc('介绍');
+        $show->slogan('简介');
+        $show->desc('介绍详情');
         $show->apply_num('申请人数');
         $show->url('网址');
         $show->limit_date('借款期限');
@@ -167,7 +168,8 @@ class ProductController extends Controller
         $form->image('icon', '图标')->move('images/products')->uniqueName();
         $form->text('limit', '额度');
         $form->text('price', '费用');
-        $form->text('desc', '介绍');
+        $form->text('slogan', '简介');
+        $form->text('desc', '介绍详情');
         $form->number('apply_num', '申请人数')->min(0);
         $form->url('url', '网址');
         $form->text('limit_date', '借款期限');

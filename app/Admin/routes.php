@@ -17,4 +17,6 @@ Route::group([
     $router->resource('products',ProductController::class);
     $router->resource('banners',BannerController::class);
     $router->resource('tags',TagController::class);
+    $router->resource('product_hot',ProductHotController::class);
+    $router->resource('product_recommend',ProductRecommendController::class);
 });

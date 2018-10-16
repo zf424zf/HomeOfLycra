@@ -56,7 +56,7 @@ class ProductHotController extends Controller
         return $content
             ->header('编辑')
             ->description('description')
-            ->body($this->form()->edit($id));
+            ->body($this->form('edit')->edit($id));
     }
 
     /**
@@ -130,12 +130,16 @@ class ProductHotController extends Controller
      *
      * @return Form
      */
-    protected function form()
+    protected function form($type = 'create')
     {
-        return Admin::form(ProductHot::class,function (Form $form){
+        return Admin::form(ProductHot::class,function (Form $form) use ($type){
             $form->display('id');
-            $ids = ProductHot::query()->pluck('pid')->toArray();
-            $products = Product::query()->whereNotIn('id',$ids)->orderBy('id','asc')->pluck('name','id')->toArray();
+            $products = Product::query();
+            if($type != 'edit'){
+                $ids = ProductHot::query()->pluck('pid')->toArray();
+                $products->whereNotIn('id', $ids);
+            }
+            $products = $products->orderBy('id', 'asc')->pluck('name', 'id')->toArray();
             $form->select('pid','口子')->options($products)->rules('required',['必须选择一个口子']);
             $form->number('order', '排序')->min(0);
             $states = [

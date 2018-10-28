@@ -24,6 +24,8 @@ class ProductionController extends Controller
         // 查询方式 0最新 1最热 2推荐
         $type = $request->has('type') ? $request->type : 0;
         //只查询上架的 并且按照推荐排列
+        // 按照排序进行排序
+        $product = $product->where('status', 1)->orderBy('is_recommend','desc')->orderBy('order');
         // 根据type创建查询构造器
         switch ($type) {
             case 0:
@@ -36,9 +38,6 @@ class ProductionController extends Controller
                 $product = app()->make(ProductRecommend::class)->with('product');
                 break;
         }
-        // 按照排序进行排序
-        $product = $product->where('status', 1)->orderBy('is_recommend','desc')->orderBy('order');
-
         //type=0时搜索product 否则进行关联搜索
         if ($request->has('s')) {
             $search = $request->get('s');
